@@ -6,11 +6,13 @@ using namespace SEGMENT_TREE;
 TEST(segment_tree, segment_tree_test)
 {
     {
+        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
         // 测试区间查询能力
         vector<int> s_arr = {0, 1, 2, 3, 4, 5};
         segment_tree<int> st = segment_tree<int>();
+        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
         st.segment_tree_init(s_arr);
-
+        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
         auto temp_sum_func= [&s_arr] (int l, int r) ->int {
             int sum = 0;
             FOR_EACH(i, l, r + 1)
@@ -19,7 +21,7 @@ TEST(segment_tree, segment_tree_test)
             }
             return sum;
         };
-
+        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
         ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
     }
     
@@ -114,6 +116,36 @@ TEST(segment_tree, segment_tree_test)
             st.add_interval(i, s_arr.size() - 1, value);
 
             ASSERT_EQ(true, st.query_interval(i, s_arr.size() - 1) == temp_sum_func(i, s_arr.size() - 1));
+            ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
+        }
+
+    }
+
+    {
+        // 测试 单点更新
+        vector<int> s_arr = {0, 1, 2, 3, 4, 5};
+        segment_tree<int> st = segment_tree<int>();
+        st.segment_tree_init(s_arr);
+
+        auto update_func_interval= [&s_arr] (int pos, int value) {
+            s_arr[pos] = value;
+        };
+
+        auto temp_sum_func= [&s_arr] (int l, int r) ->int {
+            int sum = 0;
+            FOR_EACH(i, l, r + 1)
+            {
+                sum += s_arr[i];
+            }
+            return sum;
+        };
+
+        int value = 10;
+        FOR_EACH(i, 0, s_arr.size())
+        {
+            update_func_interval(i, value);
+            st.update(i, value);
+            ASSERT_EQ(true, st.query_interval(i, i) == temp_sum_func(i, i));
             ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
         }
 
