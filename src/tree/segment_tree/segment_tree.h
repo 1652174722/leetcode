@@ -50,25 +50,25 @@ private:
     vector<T> s_arr;
     int segment_tree_layers;
 
-    vector<segment_tree_node> generate_segment_tree_array(vector<T> s_arr, int &segment_tree_layers)
+    vector<segment_tree_node> generate_segment_tree_array(vector<T> arr, int &segment_tree_layers)
     {
         vector<segment_tree_node> res;
         // 根据数据大小，确认二叉树的层数
         
         int length_len = 1;
         int sum_length = length_len;
-        this->segment_tree_layers = 1;
-        while (length_len < this->s_arr.size())
+        segment_tree_layers = 1;
+        while (length_len < arr.size())
         {
-            this->segment_tree_layers++;
+            segment_tree_layers++;
             length_len *= 2; 
             sum_length += length_len;
         }
         
         // 倒数第二层叶子节点的个数
-        int last_second_layer = length_len - this->s_arr.size();
+        int last_second_layer = length_len - arr.size();
         // 最后一层叶子节点的个数
-        int last_layer = this->s_arr.size() - last_second_layer;
+        int last_layer = arr.size() - last_second_layer;
 
         // 求出所需要二叉树数组的长度
         sum_length -= (length_len - last_layer);
@@ -79,14 +79,14 @@ private:
         {
             int pos = i - res.size() + last_layer - 1;
             res[i - 1].r = res[i - 1].l = pos;
-            res[i - 1].sum = this->s_arr[pos];
+            res[i - 1].sum = arr[pos];
         }
 
-        R_FOR_EACH(i, res.size() - last_layer, res.size() - this->s_arr.size())
+        R_FOR_EACH(i, res.size() - last_layer, res.size() - arr.size())
         {
-            int pos = i - (res.size() - last_layer) + this->s_arr.size() - 1;
+            int pos = i - (res.size() - last_layer) + arr.size() - 1;
             res[i - 1].r = res[i - 1].l = pos;
-            res[i - 1].sum = this->s_arr[pos];
+            res[i - 1].sum = arr[pos];
         }
 
         // 对数组res从后往前遍历
@@ -265,7 +265,7 @@ public:
         if (arr.size() == 0) return;
 
         this->s_arr = arr;
-        this->st_arr = this->generate_segment_tree_array(this->s_arr, this->segment_tree_layers);
+        this->st_arr = this->generate_segment_tree_array(arr, this->segment_tree_layers);
     }
 
     /**
