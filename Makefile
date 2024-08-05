@@ -3,7 +3,6 @@ TARGET = leetcode
 OBJECTS=src/com_tool.o \
 	src/graph/topological_sort.o \
 	test/gtest.o \
-	test/leetcode_test.o \
 	test/template_test.o \
 	test/graph/topological_sort_test.o \
 	test/tree/binary_tree/search_binary_tree_test.o \

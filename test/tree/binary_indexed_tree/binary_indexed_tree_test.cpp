@@ -15,14 +15,12 @@ TEST(binary_indexed_tree, binary_indexed_tree_test)
     }
     int value = 10;
 
-    cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
     FOR_EACH(i, 0, s_arr.size())
     {
         s_arr[i] += value;
         bt.add(i, value);
         ASSERT_EQ(true, bt.query_interval(i, i) == s_arr[i]);
     }
-    cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
     auto temp_sum_func= [&s_arr] (int l, int r) ->int {
         int sum = 0;
         FOR_EACH(i, l, r + 1)
@@ -31,29 +29,21 @@ TEST(binary_indexed_tree, binary_indexed_tree_test)
         }
         return sum;
     };
-    cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
     FOR_EACH(i, 0, s_arr.size())
     {
         FOR_EACH(j, i, s_arr.size())
         {
-            cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
-            ASSERT_EQ(true, bt.query_interval(j - i, j) == temp_sum_func(j - i, j));
+                    ASSERT_EQ(true, bt.query_interval(j - i, j) == temp_sum_func(j - i, j));
         }
-        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
-        ASSERT_EQ(true, bt.query(i) == temp_sum_func(0, i));
+            ASSERT_EQ(true, bt.query(i) == temp_sum_func(0, i));
     }
-    cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
     value = 33;
     FOR_EACH(i, 0, s_arr.size())
     {
-        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
-        s_arr[i] = value;
+            s_arr[i] = value;
         bt.update(i, value);
         ASSERT_EQ(true, bt.query_interval(i, i) == temp_sum_func(i, i));
-        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
-        ASSERT_EQ(true, bt.query_interval(0, s_arr.size() - 1) == temp_sum_func(0, s_arr.size() - 1));
-        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
-        ASSERT_EQ(true, bt.query(i) == temp_sum_func(0, i));
-        cout << "file name:" << __FILE__ << "line no:" << __LINE__<< endl;
-    }
+            ASSERT_EQ(true, bt.query_interval(0, s_arr.size() - 1) == temp_sum_func(0, s_arr.size() - 1));
+            ASSERT_EQ(true, bt.query(i) == temp_sum_func(0, i));
+        }
 }
