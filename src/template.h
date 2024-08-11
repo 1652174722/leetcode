@@ -6,7 +6,7 @@
 using namespace std;
 
 #define FOR_EACH(i, s, e) for(size_t (i) = (size_t)(s); (i) < (size_t)(e); (i)++)
-#define R_FOR_EACH(i, s, e) for(size_t i = (size_t)(s); (i) > e; (i)--)
+#define R_FOR_EACH(i, s, e) for(size_t i = (size_t)(s); (i) > (size_t)(e); (i)--)
 
 #define FOR_EACH_IT(it, v) for(auto it = v.begin(); it != v.end(); it++)
 #define R_FOR_EACH_IT(it, v) for(auto it = v.rcbegin(); it != v.rcend(); it++)

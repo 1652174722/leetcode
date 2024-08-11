@@ -3,7 +3,7 @@
 
 using namespace SEGMENT_TREE;
 
-TEST(segment_tree, segment_tree_test)
+TEST(segment_tree, segment_tree_test_001)
 {
     {
             // 测试区间查询能力
@@ -143,6 +143,52 @@ TEST(segment_tree, segment_tree_test)
             ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
         }
 
+    }
+}
+
+TEST(segment_tree, segment_tree_test_002)
+{
+    {
+        // 测试区间查询能力
+        vector<int> s_arr;
+        int count = 20000;
+        FOR_EACH(i, 0, count)
+        {
+            s_arr.push_back(0);
+        }
+        segment_tree<int> st = segment_tree<int>();
+        st.segment_tree_init(s_arr);
+        auto temp_sum_func= [&s_arr] (int l, int r) ->int {
+            int sum = 0;
+            FOR_EACH(i, l, r + 1)
+            {
+                sum += s_arr[i];
+            }
+            return sum;
+        };
+        int value;
+
+        value = 5 + 10000;
+        ASSERT_EQ(true, st.query_interval(0, value - 1) == temp_sum_func(0, value - 1));
+        s_arr[value] += 1;
+        st.add(value, 1);
+
+        value = 2 + 10000;
+        ASSERT_EQ(true, st.query_interval(0, value - 1) == temp_sum_func(0, value - 1));
+        s_arr[value] += 1;
+        st.add(value, 1);
+        
+        value = 6 + 10000;
+        ASSERT_EQ(true, st.query_interval(0, value - 1) == temp_sum_func(0, value - 1));
+        s_arr[value] += 1;
+        st.add(value, 1);
+
+        value =  + 10000;
+        ASSERT_EQ(true, st.query_interval(0, value - 1) == temp_sum_func(0, value - 1));
+        s_arr[value] += 1;
+        st.add(value, 1);
+        
+        
     }
 }
 

@@ -1,3 +1,7 @@
+#ifndef _GRAPH_DU_TOPOLOGICAL_SORT_H
+#define _GRAPH_DU_TOPOLOGICAL_SORT_H
+
+
 #include <vector>
 #include <set>
 #include <map>
@@ -6,7 +10,7 @@
 using namespace std;
 
 
-namespace TOPO_SORT{
+namespace GRAPH_DU_TOPO_SORT {
     
 /**
  * @brief topological sort
@@ -18,3 +22,6 @@ namespace TOPO_SORT{
 vector<int> topological_sort(vector<pair<int, int>> edges);
 
 }
+
+
+#endif

@@ -1,21 +1,28 @@
 TARGET = leetcode
 
-OBJECTS=src/com_tool.o \
-	src/graph/topological_sort.o \
-	test/gtest.o \
+SRC_OBJECTS=src/com_tool.o \
+	src/graph/graph_directed/graph_unweight/graph_du_topological_sort.o \
+	src/graph/graph_directed/graph_unweight/graph_du_shortest_path.o \
+
+TEST_OBJECTS=test/gtest.o \
 	test/template_test.o \
-	test/graph/topological_sort_test.o \
+	test/graph/graph_directed/graph_unweight/graph_du_topological_sort_test.o \
+	test/graph/graph_directed/graph_unweight/graph_du_shortest_path_test.o \
 	test/tree/binary_tree/search_binary_tree_test.o \
 	test/common_algorithm/difference_array_test.o \
 	test/tree/binary_indexed_tree/binary_indexed_tree_test.o \
-	test/tree/segment_tree/segment_tree_test.o 
+	test/tree/segment_tree/segment_tree_test.o
+	
+
+ALL_OBJECTS=${SRC_OBJECTS} ${TEST_OBJECTS}
 
 # CFLAGS +=-fprofile-arcs  -ftest-coverage
 
 DFLAGS=-Lgtest/lib -lgtest -lpthread
 
 INCLUDES = -Isrc \
-		   -Isrc/graph \
+		   -Isrc/graph/directed_graph \
+		   -Isrc/graph/undirected_graph \
 		   -Isrc/common_algorithm \
 		   -Isrc/tree/binary_tree \
 		   -Isrc/tree/binary_indexed_tree \
@@ -30,17 +37,17 @@ LIB_HEAD_FILES = $(wildcard src/*.h) \
 
 
 # -fsanitize=address -lasan
-$(TARGET) : $(OBJECTS)
-	g++ $(OBJECTS) -o $(TARGET) -g -Wall -std=c++11 $(CFLAGS) $(DFLAGS)
+$(TARGET) : $(ALL_OBJECTS)
+	g++ $(ALL_OBJECTS) -o $(TARGET) -g -Wall -std=c++11 $(CFLAGS) $(DFLAGS)
 # g++ $(OBJECTS) -o $(TARGET) -g -Wall -std=c++11 -fstack-protector-all 
 	@echo "build $(TARGET) successfully."
 
-$(OBJECTS) : %.o : %.cpp
+$(ALL_OBJECTS) : %.o : %.cpp
 	g++ -g -Wall -std=c++11 $(CFLAGS) -c $< -o $@ $(INCLUDES)
 
 .PHONY: clean
 clean:
-	@rm -rf $(TARGET) $(OBJECTS) test/*.gcda src/*.gcda  test/*.gcno src/*.gcno 
+	@rm -rf $(TARGET) $(ALL_OBJECTS) test/*.gcda src/*.gcda  test/*.gcno src/*.gcno 
 
 run : $(TARGET)
 	./leetcode
