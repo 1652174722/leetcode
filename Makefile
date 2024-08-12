@@ -1,13 +1,14 @@
 TARGET = leetcode
 
 SRC_OBJECTS=src/com_tool.o \
-	src/graph/graph_directed/graph_unweight/graph_du_topological_sort.o \
-	src/graph/graph_directed/graph_unweight/graph_du_shortest_path.o \
+	src/graph/graph_directed/graph_unweighted/graph_du_topological_sort.o \
+	src/graph/graph_directed/graph_unweighted/graph_du_shortest_path.o \
 
 TEST_OBJECTS=test/gtest.o \
 	test/template_test.o \
-	test/graph/graph_directed/graph_unweight/graph_du_topological_sort_test.o \
-	test/graph/graph_directed/graph_unweight/graph_du_shortest_path_test.o \
+	test/graph/graph_directed/graph_unweighted/graph_du_topological_sort_test.o \
+	test/graph/graph_directed/graph_unweighted/graph_du_shortest_path_test.o \
+	test/graph/graph_directed/graph_weighted/graph_dijkstr_test.o \
 	test/tree/binary_tree/search_binary_tree_test.o \
 	test/common_algorithm/difference_array_test.o \
 	test/tree/binary_indexed_tree/binary_indexed_tree_test.o \
@@ -21,8 +22,8 @@ ALL_OBJECTS=${SRC_OBJECTS} ${TEST_OBJECTS}
 DFLAGS=-Lgtest/lib -lgtest -lpthread
 
 INCLUDES = -Isrc \
-		   -Isrc/graph/directed_graph \
-		   -Isrc/graph/undirected_graph \
+		   -Isrc/graph/graph_directed/graph_unweighted \
+		   -Isrc/graph/graph_directed/graph_weighted \
 		   -Isrc/common_algorithm \
 		   -Isrc/tree/binary_tree \
 		   -Isrc/tree/binary_indexed_tree \

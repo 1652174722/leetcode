@@ -77,7 +77,7 @@ public:
      * @brief 获取有向图中两图中两节点之间所有最短的路径
      *
      * @param
-     * @return 所有最短连线的路径
+     * @return 所有最短连线的路径, 长度为0，表示两节点之间没有连接
      */
     vector<vector<int>> get_all_shortest_paths_between_two_nodes(int a, int b);
 };

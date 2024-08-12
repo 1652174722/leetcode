@@ -15,11 +15,11 @@ namespace GRAPH_DU_TOPO_SORT {
 /**
  * @brief topological sort
  *
- * @param edges directed edge eg:pair.::irst->pair::second
+ * @param edges directed edge eg:pair::first->pair::second
  * @param split_chr split char
  * @return success:return sorted vector<int>;error: return null (vector<int>())
  */
-vector<int> topological_sort(vector<pair<int, int>> edges);
+vector<int> graph_du_topological_sort(vector<pair<int, int>> edges);
 
 }
 

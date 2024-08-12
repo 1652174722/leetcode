@@ -76,7 +76,7 @@ namespace GRAPH_DU_SHORTEST_PATH {
             {
                 if (edges[i][j] != 0 && j != i)
                 {
-                    adjcency_table[i].push_back(j);
+                    this->adjcency_table[i].push_back(j);
                 }
             }
         }

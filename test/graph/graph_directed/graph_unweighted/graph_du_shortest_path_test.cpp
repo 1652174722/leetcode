@@ -4,10 +4,10 @@
 
 using namespace std;
 
-#include "unweighted_graph.h"
+#include "graph_du_shortest_path.h"
 #include "gtest/gtest.h"
 
-TEST(unweighted_graph, get_shortest_path_length_between_two_nodes_test)
+TEST(graph_du_shortest_path, get_shortest_path_length_between_two_nodes_test)
 {
     pair<int, int> edge_list[] = {
         {0, 1},
@@ -27,7 +27,7 @@ TEST(unweighted_graph, get_shortest_path_length_between_two_nodes_test)
         edges[edge.first][edge.second] = 1;
         edges[edge.second][edge.first] = 1;
     }
-    UNWEIGHTED_GRAPH::unweighted_graph uw_graph;
+    GRAPH_DU_SHORTEST_PATH::graph_du_shortest_path uw_graph;
     uw_graph.undirected_graph_init(edges);
 
     int min_depth = uw_graph.get_shortest_path_length_between_two_nodes(0, 5);
@@ -56,7 +56,7 @@ TEST(unweighted_graph, get_shortest_path_length_between_two_nodes_test)
 }
 
 
-TEST(unweighted_graph, get_shorts_paths_between_two_nodes_test)
+TEST(graph_du_shortest_path, get_shorts_paths_between_two_nodes_test)
 {
     pair<int, int> edge_list[] = {
         {0, 1},
@@ -78,7 +78,7 @@ TEST(unweighted_graph, get_shorts_paths_between_two_nodes_test)
         edges[edge.first][edge.second] = 1;
         edges[edge.second][edge.first] = 1;
     }
-    UNWEIGHTED_GRAPH::unweighted_graph uw_graph;
+    GRAPH_DU_SHORTEST_PATH::graph_du_shortest_path uw_graph;
     uw_graph.undirected_graph_init(edges);
 
     auto is_equal_func = [](vector<vector<int>> &a, vector<vector<int>> &b) -> bool {
