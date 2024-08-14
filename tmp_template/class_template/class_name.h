@@ -1,5 +1,5 @@
-#ifndef CLASS_NAME_H
-#define CLASS_NAME_H
+#ifndef VAR__CLASS_NAME_H
+#define _CLASS_NAME_H
 
 #include <vector>
 #include <set>
@@ -19,15 +19,19 @@ namespace CLASS_NAME_NAMESPACE {
 /**
  * @brief topological sort
  *
- * @param edges directed edge eg:pair.::irst->pair::second
- * @param split_chr split char
+ * @param
+ * @param 
  * @return success:return sorted vector<int>;error: return null (vector<int>())
  */
-template<class T>
-class class_name
+// template<class T>
+class var_class_name
 {
-    class_name();
+private:
+
+public:
+    void var_class_name_init();
 };
 
 }
+
 #endif

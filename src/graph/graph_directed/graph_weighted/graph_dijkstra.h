@@ -50,6 +50,7 @@ public:
 
         FOR_EACH(i, 0, edges.size())
         {
+            this->adjcency_table.push_back(vector<int>(0));
             FOR_EACH(j, 0, edges[i].size())
             {
                 if (edges[i][j] != 0 && j != i)
@@ -76,10 +77,10 @@ public:
         
         auto weight_comp = [](const pair<T, int> &a, const pair<T, int> &b) -> bool
         {
-            return a.first < b.first;
+            return a.first > b.first;
         };
  
-        std::priority_queue<pair<T, int>> filter(weight_comp);
+        std::priority_queue<pair<T, int>, vector<pair<T, int>>, decltype(weight_comp)> filter(weight_comp);
 
         FOR_EACH(i, 0, res.size())
         {
