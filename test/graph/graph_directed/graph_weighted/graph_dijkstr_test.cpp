@@ -18,8 +18,8 @@ TEST(graph_dijkstra, graph_dijkstra_test)
         {{2,  4}, 4},
         {{3,  4}, 5},
     };
-    vector<vector<int>> edges = vector<vector<int>>(11, vector<int>(11, 0));
-    vector<vector<int>> weights = vector<vector<int>>(11, vector<int>(11, 0));
+    vector<vector<int>> edges = vector<vector<int>>(5, vector<int>(5, 0));
+    vector<vector<int>> weights = vector<vector<int>>(5, vector<int>(5, 0));
 
     for (auto &edge : edge_list)
     {
@@ -56,9 +56,9 @@ TEST(graph_dijkstra, graph_dijkstra_test)
 }
 
 
-#if 0
+#if 1
 
-TEST(graph_dijkstra, graph_dijkstra_test)
+TEST(graph_dijkstra, graph_dijkstra_test_001)
 {
     pair<pair<int, int>, int> edge_list[] = {
         {{0,  1}, 2},
@@ -75,9 +75,9 @@ TEST(graph_dijkstra, graph_dijkstra_test)
         {{4,  7}, 2},
         {{4,  8}, 9},
         {{5,  6}, 4},
-        {{5,  8}, 3},
-        {{6,  8}, 1},
-        {{6,  9}, 9},
+        {{5,  8}, 6},
+        {{6,  8}, 3},
+        {{6,  9}, 1},
         {{7,  8}, 7},
         {{7, 10}, 9},
         {{8,  9}, 1},
@@ -120,9 +120,9 @@ TEST(graph_dijkstra, graph_dijkstra_test)
     real_res[5] = 6;
     real_res[6] = 9;
     real_res[7] = 5;
-    real_res[8] = 0;
-    real_res[9] = 0;
-    real_res[10] = 0;
+    real_res[8] =11;
+    real_res[9] = 10;
+    real_res[10] = 13;
 
     vector<int> res = gd.get_shortest_path_weight_between_nodo_with_others(0);
     EXPECT_TRUE(true == is_equal_func(real_res, res));

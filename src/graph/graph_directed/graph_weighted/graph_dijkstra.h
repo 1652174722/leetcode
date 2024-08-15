@@ -37,7 +37,7 @@ public:
     /**
      * @brief 有权重的有向shi图初始化
      *        约束：权重值 T 只能为正,可以为整数,小数
-
+     *        edges与weight必须都是n*n大小的二维矩阵
      * 
      * @param edges edegs[i][j]为0 表示节点i到节点j没有边; 1表示节点i到j之间存在一条边
      * @param weight weight[i][j]，边i->j的权重，大于等于0,即 T1+T2 >= T1或T2
@@ -77,35 +77,45 @@ public:
         
         auto weight_comp = [](const pair<T, int> &a, const pair<T, int> &b) -> bool
         {
-            return a.first > b.first;
+            if (a.first != b.first)
+            {
+                return a.first < b.first;
+            }
+            else
+            {
+                return a.second < b.second;
+            } 
         };
- 
-        std::priority_queue<pair<T, int>, vector<pair<T, int>>, decltype(weight_comp)> filter(weight_comp);
+
+        set<pair<T, int>, decltype(weight_comp)> filter(weight_comp);
+
 
         FOR_EACH(i, 0, res.size())
         {
-            filter.push(make_pair(res[i], i));
+            filter.insert(make_pair(res[i], i));
         }
 
         while (!filter.empty())
         {
-            pair<T, int> p = filter.top();
+            auto iter = filter.begin();
 
-            for(auto &node : this->adjcency_table[p.second])
+            for(auto &node : this->adjcency_table[iter->second])
             {
                 if (visited[node] == 0)
                 {
-                    T sum = res[p.second] + this->weight[p.second][node];
+                    T sum = res[iter->second] + this->weight[iter->second][node];
                     if (sum < res[node])
                     {
+                        filter.erase(make_pair(res[node], node));
+                        filter.insert(make_pair(sum, node));
                         res[node] = sum;
                     }   
                 }   
             }
 
-            res[p.second] = p.first;
-            visited[p.second] = 1;
-            filter.pop();
+            res[iter->second] = iter->first;
+            visited[iter->second] = 1;
+            filter.erase(iter);  
         }
         
         return res;
