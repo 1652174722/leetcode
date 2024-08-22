@@ -17,6 +17,8 @@ using namespace std;
 
 namespace GRAPH_DIJKSTRA {
 
+#define PATH_INFINITE INT32_MAX
+
 /**
  * @brief Dijkstra算法
  * 背景：迪杰斯特拉算法(Dijkstra)是由荷兰计算机科学家狄杰斯特拉于1959 年提出的，因此又叫狄克斯特拉算法
@@ -72,7 +74,7 @@ public:
             return vector<T>(0);
         }
         vector<int> visited(this->edges.size(), 0);
-        vector<T> res = vector<T>(this->edges.size(), (T)INT32_MAX);
+        vector<T> res = vector<T>(this->edges.size(), (T)PATH_INFINITE);
         res[k] = (T)0;
         
         auto weight_comp = [](const pair<T, int> &a, const pair<T, int> &b) -> bool
@@ -90,10 +92,7 @@ public:
         set<pair<T, int>, decltype(weight_comp)> filter(weight_comp);
 
 
-        FOR_EACH(i, 0, res.size())
-        {
-            filter.insert(make_pair(res[i], i));
-        }
+        filter.insert(make_pair(res[k], k));
 
         while (!filter.empty())
         {
