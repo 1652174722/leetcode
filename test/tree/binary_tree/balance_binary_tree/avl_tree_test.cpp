@@ -1,0 +1,209 @@
+#include <vector>
+
+#include "avl_tree.h"
+#include "gtest/gtest.h"
+
+using namespace AVL_TREE;
+
+TEST(avl_tree, avl_tree_test)
+{
+    auto cmp_func = [] (const int &a, const int &b) -> int {
+        if (a == b) return 0;
+        else if (a > b) return 1;
+        else return -1;
+    };
+
+    auto size_func = [] (vector<size_t> &v) -> size_t {
+        size_t sum = 0;
+        FOR_EACH(i, 0, v.size())
+        {
+            sum += v[i];
+        }
+        return sum;
+    };
+
+    auto insert_func = [] (vector<size_t> &v, size_t i) -> size_t {
+        if (i < 0 || i >= v.size()) return -1;
+        v[i]++;
+        return v[i];
+    };
+
+    auto erase_func = [] (vector<size_t> &v, size_t i) -> size_t {
+        if (i < 0 || i >= v.size()) return 0;
+
+        size_t real_count = v[i];
+        v[i] = 0;
+        return real_count;
+    };
+
+    auto erase_once_func = [] (vector<size_t> &v, size_t i) -> size_t {
+        if (i < 0 || i >= v.size()) return -1;
+
+        size_t real_count = v[i];
+        if (real_count == 0) return 0;
+        v[i]--;
+        return real_count;
+    };
+
+    auto find_func = [] (vector<size_t> &v, size_t i) -> size_t {
+        if (i < 0 || i >= v.size()) return 0;
+
+        return v[i];
+    };
+
+    auto clear_func = [] (vector<size_t> &v) {
+        FOR_EACH(i, 0, v.size())
+        {
+            v[i] = 0;
+        }
+    };
+
+    auto traverse_func = [] (vector<size_t>&v, int(*process_func)(size_t count, const int &value, void *in_out), void *in_out) -> int {
+        FOR_EACH(i, 0, v.size())
+        {
+            int ret = 0;
+            if (v[i] > 0)
+            {
+                ret = process_func(v[i], i, in_out);
+                if (ret)
+                {
+                    return -1;
+                } 
+            }     
+        }
+        return 0;
+    };
+
+    // 单重复值测试
+    {
+        int count = 10;
+        vector<size_t> v1 = vector<size_t>(count, 0);
+        avl_tree<int> t1(cmp_func);
+        FOR_EACH(i, 0, count)
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.insert(llll) == insert_func(v1, llll));
+            ASSERT_EQ(true, t1.size() == size_func(v1));
+        }
+
+        
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.erase_once(llll) == erase_once_func(v1, llll));
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+        }
+
+        ASSERT_EQ(true, t1.size() == size_func(v1));
+
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.insert(llll) == insert_func(v1, llll));
+            ASSERT_EQ(true, t1.size() == size_func(v1));
+        }
+
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.erase(llll) == erase_func(v1, llll));
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+        }
+
+        FOR_EACH(i, v1.size(), v1.size() * 2)
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.erase(llll) == erase_func(v1, llll));
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+        }
+
+        t1.clear();
+        clear_func(v1);
+        ASSERT_EQ(true, t1.size() == size_func(v1));
+    }
+
+    // 多重复值测试
+    {
+        int count = 10;
+        int loop_count = 10;
+        vector<size_t> v1 = vector<size_t>(count, 0);
+        avl_tree<int> t1(cmp_func);
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            FOR_EACH(j, 0, loop_count)
+            {
+                ASSERT_EQ(true, t1.insert(llll) == insert_func(v1, llll));
+                ASSERT_EQ(true, t1.size() == size_func(v1));
+            }
+        }
+
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.erase_once(llll) == erase_once_func(v1, llll));
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.size() == size_func(v1));
+        }
+
+        FOR_EACH(i, v1.size(), v1.size() * 2)
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.erase(llll) == erase_func(v1, llll));
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+        }
+
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.erase(llll) == erase_func(v1, llll));
+            ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.size() == size_func(v1));
+        }
+
+        t1.clear();
+        clear_func(v1);
+        ASSERT_EQ(true, t1.size() == size_func(v1));
+    }
+
+    // 遍历能力测试
+    {
+        int count = 10;
+        int loop_count = 10;
+        vector<size_t> v1 = vector<size_t>(count, 0);
+        avl_tree<int> t1(cmp_func);
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            FOR_EACH(j, 0, loop_count)
+            {
+                ASSERT_EQ(true, t1.insert(llll) == insert_func(v1, llll));
+                ASSERT_EQ(true, t1.size() == size_func(v1));
+            }
+        }
+
+        auto traverse_func_test = [](size_t count, const int &value, void *in_out) -> int {
+            vector<pair<int, int>> *v1 = (vector<pair<int, int>> *)in_out;
+
+            v1->push_back(make_pair(count, value));
+            return 0;
+        };
+
+        vector<pair<int, int>> res1;
+        vector<pair<int, int>> res2;
+        t1.traverse(traverse_func_test, &res1);
+        traverse_func(v1, traverse_func_test, &res2);
+
+        ASSERT_EQ(true, res1.size() == res2.size());
+        FOR_EACH(i, 0, res1.size())
+        {
+            ASSERT_EQ(true, res1[i].first == res2[i].first && res1[i].second == res2[i].second);
+        }
+    }
+}

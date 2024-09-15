@@ -10,6 +10,7 @@ TEST_OBJECTS=test/gtest.o \
 	test/graph/graph_directed/graph_unweighted/graph_du_shortest_path_test.o \
 	test/graph/graph_directed/graph_weighted/graph_dijkstr_test.o \
 	test/tree/binary_tree/search_binary_tree_test.o \
+	test/tree/binary_tree/balance_binary_tree/avl_tree_test.o \
 	test/common_algorithm/difference_array_test.o \
 	test/tree/binary_indexed_tree/binary_indexed_tree_test.o \
 	test/tree/segment_tree/segment_tree_test.o
@@ -26,6 +27,7 @@ INCLUDES = -Isrc \
 		   -Isrc/graph/graph_directed/graph_weighted \
 		   -Isrc/common_algorithm \
 		   -Isrc/tree/binary_tree \
+		   -Isrc/tree/binary_tree/balance_binary_tree \
 		   -Isrc/tree/binary_indexed_tree \
 		   -Isrc/tree/segment_tree \
 		   -Itest \
