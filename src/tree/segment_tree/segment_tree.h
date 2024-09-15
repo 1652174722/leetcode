@@ -18,8 +18,8 @@ using namespace std;
 namespace SEGMENT_TREE {
 
 /**
- * @brief binary indexed tree 树状数组也称二叉索引树,（利用完全二叉树的性质）
- * 用于单点修改与区间查询都频繁的场景
+ * @brief segment tree 线段树
+ * 支持区间修改与区间查询
  * T 只能为 整数或者小数
  */
 template<class T>
@@ -341,4 +341,5 @@ public:
 };
 
 }
+
 #endif

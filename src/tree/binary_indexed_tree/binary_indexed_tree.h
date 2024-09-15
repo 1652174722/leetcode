@@ -21,7 +21,7 @@ namespace BINARY_INDEXED_TREE {
 
 /**
  * @brief binary indexed tree 树状数组也称二叉索引树
- * 用于单点修改与区间查询和都频繁的场景
+ * 支持单点修改与区间查
  */
 template<class T>
 class binary_indexed_tree

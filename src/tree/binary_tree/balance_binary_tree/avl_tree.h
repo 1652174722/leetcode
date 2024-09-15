@@ -695,28 +695,69 @@ public:
     {
         if (t >= this->size())
         {
-            throw -1;
+            throw new string("out of avl size range");
         }
         
-        
-        return 0;
+        size_t left_size = t;
+        avl_node<T> *curr_node = this->root;
+        while (curr_node)
+        {
+            size_t l_size = curr_node->child[0] == NULL ? 0 : curr_node->child[0]->size;
+            if (left_size < l_size)
+            {
+                curr_node = curr_node->child[0];
+            } else if (left_size < (l_size + curr_node->count))
+            {
+                break;
+            }
+            else
+            {
+                left_size -= (l_size + curr_node->count);
+                curr_node = curr_node->child[1];
+            }
+        }
+
+        return curr_node->val;
     }
 
     /**
      * @brief return starting and ending position of value
      *
      * @param 
-     * @return pair<start positoin, end position>,start with 0; others throw -1,
+     * @return pair<start positoin, end position>,[start, end):start with 0,include start position exclude end position; others throw -1,
      */
-    pair<size_t, size_t>  get_positions(const T &value)
+    pair<size_t, size_t> get_position(const T &value)
     {
-        pair<size_t, size_t> res;
-        
+        pair<size_t, size_t> res(0, 0);
+        if (this->cmp_func == NULL || this->root == NULL)
+        {
+            throw new string("no such value in avl");
+        }
+        avl_node<T> *curr_node = this->root;
+        size_t start_pos = 0;
+        int ret;
+        while (curr_node)
+        {
+            size_t l_size = curr_node->child[0] == NULL ? 0 : curr_node->child[0]->size;
+            ret = this->cmp_func(value, curr_node->val);
+            if (ret < 0)
+            {
+                curr_node = curr_node->child[0];
+            }
+            else if (ret > 0)
+            {
+                start_pos += l_size + curr_node->count;
+                curr_node = curr_node->child[1];
+            }
+            else
+            {
+                return make_pair<size_t, size_t>(start_pos + l_size, start_pos + l_size + curr_node->count);
+            }
+        }
 
+        throw new string("no such value in avl");
         return res;
     }
-
-    
 };
 
 }

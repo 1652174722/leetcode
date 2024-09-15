@@ -74,19 +74,81 @@ TEST(avl_tree, avl_tree_test)
         return 0;
     };
 
+    auto get_kth_func = [] (vector<size_t> &v, size_t t) -> int {
+        size_t sum = 0;
+        FOR_EACH(i, 0, v.size())
+        {
+            sum += v[i];
+            if (t < sum)
+            {
+                return i;
+            }
+        }
+
+        throw new string("out of avl size range");
+    };
+
+    auto get_position_func = [] (vector<size_t> &v, const int &value) -> pair<size_t, size_t> {
+        if (value < 0 || value >= (int)v.size())
+        {
+            throw new string("no such value in avl");
+        }
+        size_t start_pos = 0;
+        FOR_EACH(i, 0, v.size())
+        {
+
+            if (value == (int)i)
+            {
+                return make_pair(start_pos, start_pos + v[i]);
+            }
+            start_pos += v[i];
+        }
+        return make_pair(0, 0);
+    };
+
     // 单重复值测试
     {
         int count = 10;
         vector<size_t> v1 = vector<size_t>(count, 0);
         avl_tree<int> t1(cmp_func);
-        FOR_EACH(i, 0, count)
+
+        FOR_EACH(i, 0, t1.size())
         {
             int llll = (int)i;
             ASSERT_EQ(true, t1.insert(llll) == insert_func(v1, llll));
-            ASSERT_EQ(true, t1.size() == size_func(v1));
+        }
+        
+        FOR_EACH(i, 0, t1.size())
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.get_kth(llll) == get_kth_func(v1, llll));
+            auto p1 = t1.get_position(llll);
+            auto p2 = get_position_func(v1, llll);
+            ASSERT_EQ(true, p1.first == p2.first && p2.second == p2.second);
         }
 
-        
+        FOR_EACH(i, t1.size(), t1.size() * 2)
+        {
+            int llll = (int)i;
+            try {
+                t1.get_kth(llll);
+                ASSERT_TRUE(false);
+            }
+            catch (string e)
+            {
+                ASSERT_TRUE(true);
+            }
+
+            try {
+                t1.get_position(llll);
+                ASSERT_TRUE(false);
+            }
+            catch (string e)
+            {
+                ASSERT_TRUE(true);
+            }
+        }
+
         FOR_EACH(i, 0, v1.size())
         {
             int llll = (int)i;
@@ -206,4 +268,5 @@ TEST(avl_tree, avl_tree_test)
             ASSERT_EQ(true, res1[i].first == res2[i].first && res1[i].second == res2[i].second);
         }
     }
+
 }
