@@ -85,13 +85,13 @@ TEST(avl_tree, avl_tree_test)
             }
         }
 
-        throw new string("out of avl size range");
+        throw string("out of avl size range");
     };
 
     auto get_position_func = [] (vector<size_t> &v, const int &value) -> pair<size_t, size_t> {
         if (value < 0 || value >= (int)v.size())
         {
-            throw new string("no such value in avl");
+            throw string("no such value in avl");
         }
         size_t start_pos = 0;
         FOR_EACH(i, 0, v.size())
@@ -106,48 +106,67 @@ TEST(avl_tree, avl_tree_test)
         return make_pair(0, 0);
     };
 
+    auto first_lt_func = [] (vector<size_t> &v, const int &value) -> int {
+        if (value <= 0)
+        {
+            throw string("no such value in avl");
+        }
+        if (value > (int)(v.size() - 1)) return v.size() - 1;
+        return value - 1;
+    };
+
+    auto first_gt_func = [] (vector<size_t> &v, const int &value) -> int {
+        if (value >= (int)(v.size() - 1))
+        {
+            throw string("no such value in avl");
+        }
+        if (value < 0) return 0;
+        return value + 1;
+    }; 
+
+
     // 单重复值测试
     {
         int count = 10;
         vector<size_t> v1 = vector<size_t>(count, 0);
         avl_tree<int> t1(cmp_func);
 
-        FOR_EACH(i, 0, t1.size())
+        FOR_EACH(i, 0, v1.size())
         {
             int llll = (int)i;
             ASSERT_EQ(true, t1.insert(llll) == insert_func(v1, llll));
         }
         
-        FOR_EACH(i, 0, t1.size())
+        FOR_EACH(i, 0, v1.size())
         {
             int llll = (int)i;
-            ASSERT_EQ(true, t1.get_kth(llll) == get_kth_func(v1, llll));
-            auto p1 = t1.get_position(llll);
+            ASSERT_EQ(true, t1.kth(llll) == get_kth_func(v1, llll));
+            auto p1 = t1.position(llll);
             auto p2 = get_position_func(v1, llll);
             ASSERT_EQ(true, p1.first == p2.first && p2.second == p2.second);
         }
 
-        FOR_EACH(i, t1.size(), t1.size() * 2)
+        EXPECT_ANY_THROW(t1.kth(-1));
+        EXPECT_ANY_THROW(t1.kth(t1.size()));
+
+        EXPECT_ANY_THROW(t1.position(-1));
+        EXPECT_ANY_THROW(t1.position(t1.size()));
+
+
+        EXPECT_ANY_THROW(t1.first_lt(0));
+        FOR_EACH(i, 1, v1.size() + 1)
         {
             int llll = (int)i;
-            try {
-                t1.get_kth(llll);
-                ASSERT_TRUE(false);
-            }
-            catch (string e)
-            {
-                ASSERT_TRUE(true);
-            }
-
-            try {
-                t1.get_position(llll);
-                ASSERT_TRUE(false);
-            }
-            catch (string e)
-            {
-                ASSERT_TRUE(true);
-            }
+            ASSERT_EQ(true, t1.first_lt(llll) == first_lt_func(v1, llll));
         }
+
+        ASSERT_EQ(true, t1.first_gt(-1)== first_gt_func(v1, -1));
+        FOR_EACH(i, 0, v1.size() - 1)
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.first_gt(llll) == first_gt_func(v1, llll));
+        }
+        EXPECT_ANY_THROW(t1.first_gt(t1.size() - 1));
 
         FOR_EACH(i, 0, v1.size())
         {
@@ -202,6 +221,37 @@ TEST(avl_tree, avl_tree_test)
                 ASSERT_EQ(true, t1.size() == size_func(v1));
             }
         }
+
+        FOR_EACH(i, 0, v1.size())
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.kth(llll) == get_kth_func(v1, llll));
+            auto p1 = t1.position(llll);
+            auto p2 = get_position_func(v1, llll);
+            ASSERT_EQ(true, p1.first == p2.first && p2.second == p2.second);
+        }
+
+        EXPECT_ANY_THROW(t1.kth(-1));
+        EXPECT_ANY_THROW(t1.kth(t1.size()));
+
+        EXPECT_ANY_THROW(t1.position(-1));
+        EXPECT_ANY_THROW(t1.position(t1.size()));
+
+
+        EXPECT_ANY_THROW(t1.first_lt(0));
+        FOR_EACH(i, 1, v1.size() + 1)
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.first_lt(llll) == first_lt_func(v1, llll));
+        }
+
+        ASSERT_EQ(true, t1.first_gt(-1)== first_gt_func(v1, -1));
+        FOR_EACH(i, 0, v1.size() - 1)
+        {
+            int llll = (int)i;
+            ASSERT_EQ(true, t1.first_gt(llll) == first_gt_func(v1, llll));
+        }
+        EXPECT_ANY_THROW(t1.first_gt(t1.size() - 1));
 
         FOR_EACH(i, 0, v1.size())
         {

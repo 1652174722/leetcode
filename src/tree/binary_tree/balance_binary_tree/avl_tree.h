@@ -411,9 +411,9 @@ private:
         
         avl_node<T> *sub_l, *sub_r;
         size_t sub_l_h, sub_r_h;
-        switch (r_sub_h - l_sub_h)
+        switch (2 + r_sub_h - l_sub_h)
         {
-            case -2:
+            case 0:
                 // 平衡因子为-2，需要左右旋重新调整平衡因子
                 
                 sub_l = node->child[0]->child[0];
@@ -437,23 +437,23 @@ private:
                     res_node = right_rotate(node);
                 }
                 break;
-            case -1:
+            case 1:
                 // update n1's height,size,bf;
                 node->bf = -1;
                 node->height = l_sub_h +1;
                 node->size = l_sub_size + r_sub_size + node->count;
                 break;
-            case 0:
+            case 2:
                 // update n1's height,size,bf;
                 node->bf = 0;
                 node->size = l_sub_size + r_sub_size + node->count;
                 break;
-            case 1:
+            case 3:
                 node->bf = 1;
                 node->height = r_sub_h + 1;
                 node->size = l_sub_size + r_sub_size + node->count;
                 break;
-            case 2:
+            case 4:
                 // 平衡因子为2，需要左右旋重新调整平衡因子
                 sub_l = node->child[1]->child[0];
                 sub_r = node->child[1]->child[1];
@@ -616,7 +616,7 @@ public:
     /*
      * @brief return the count of the same value
      *
-     * @param in and out paremeter :be updated when find return
+     * @param value: in and out paremeter :be updated when find return
      * @return  the count of the same value
      */
     size_t find(T &value)
@@ -646,6 +646,40 @@ public:
         }
         return 0;
     }
+
+    /*
+     * @brief return the count of the same value
+     *
+     * @param value
+     * @return  the count of the same value
+     */
+    size_t count(T &value)
+    {
+        if (this->cmp_func == NULL || this->root == NULL)
+        {
+            return 0;
+        }
+        avl_node<T> *curr_node = this->root;
+        int ret;
+        while (curr_node)
+        {
+            ret = this->cmp_func(value, curr_node->val);
+            if (ret < 0)
+            {
+                curr_node = curr_node->child[0];
+            }
+            else if (ret > 0)
+            {
+                curr_node = curr_node->child[1];
+            }
+            else
+            {
+                return curr_node->count;
+            }
+        }
+        return 0;
+    }
+
 
     /**
      * @brief return all the number of the avl tree
@@ -691,11 +725,11 @@ public:
      * @param value[out] 
      * @return 0 success; others throw -1.
      */
-    T get_kth(size_t t)
+    T kth(size_t t)
     {
         if (t >= this->size())
         {
-            throw new string("out of avl size range");
+            throw string("out of avl size range");
         }
         
         size_t left_size = t;
@@ -726,12 +760,12 @@ public:
      * @param 
      * @return pair<start positoin, end position>,[start, end):start with 0,include start position exclude end position; others throw -1,
      */
-    pair<size_t, size_t> get_position(const T &value)
+    pair<size_t, size_t> position(const T &value)
     {
         pair<size_t, size_t> res(0, 0);
         if (this->cmp_func == NULL || this->root == NULL)
         {
-            throw new string("no such value in avl");
+            throw string("no such value in avl");
         }
         avl_node<T> *curr_node = this->root;
         size_t start_pos = 0;
@@ -755,8 +789,80 @@ public:
             }
         }
 
-        throw new string("no such value in avl");
+        throw string("no such value in avl");
         return res;
+    }
+
+    /**
+     * @brief get first element which is less than value
+     *
+     * @param value
+     * @return if no such element then throw exception
+     */
+    T first_lt(const T &value)
+    {
+        if (this->root == NULL || this->cmp_func == NULL)
+        {
+            throw string("no such element which which is less than value");
+        }
+        avl_node<T> *curr = root;
+        avl_node<T> *first_lt = NULL;
+        while (curr)
+        {
+            int ret = this->cmp_func(curr->val, value);
+
+            if (ret < 0)
+            {
+                first_lt = curr;
+                curr = curr->child[1];
+            }
+            else
+            {
+                curr = curr->child[0];
+            }
+        }
+
+        if (first_lt == NULL)
+        {
+            throw string("no such element which which is less than value");
+        }
+        return first_lt->val;
+    }
+
+    /**
+     * @brief get first element which is greater than value
+     *
+     * @param value
+     * @return if no such element then throw exception
+     */
+    T first_gt(const T &value)
+    {
+        if (this->root == NULL || this->cmp_func == NULL)
+        {
+            throw string("no such element which which is greater than value");
+        }
+        avl_node<T> *curr = root;
+        avl_node<T> *first_gt = NULL;
+        while (curr)
+        {
+            int ret = this->cmp_func(curr->val, value);
+
+            if (ret > 0)
+            {
+                first_gt = curr;
+                curr = curr->child[0];
+            }
+            else
+            {
+                curr = curr->child[1];
+            }
+        }
+        if (first_gt == NULL)
+        {
+            throw string("no such element which which is greater than value");
+            
+        }
+        return first_gt->val;
     }
 };
 
