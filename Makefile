@@ -41,12 +41,12 @@ LIB_HEAD_FILES = $(wildcard src/*.h) \
 
 # -fsanitize=address -lasan
 $(TARGET) : $(ALL_OBJECTS)
-	g++ $(ALL_OBJECTS) -o $(TARGET) -g -Wall -std=c++11 $(CFLAGS) $(DFLAGS)
-# g++ $(OBJECTS) -o $(TARGET) -g -Wall -std=c++11 -fstack-protector-all 
+	g++ $(ALL_OBJECTS) -o $(TARGET) -g -Wall -std=c++11 -fstack-protector-all -fsanitize=address -lasan $(CFLAGS) $(DFLAGS)
+# g++ $(OBJECTS) -o $(TARGET) -g -Wall -std=c++11 
 	@echo "build $(TARGET) successfully."
 
 $(ALL_OBJECTS) : %.o : %.cpp
-	g++ -g -Wall -std=c++11 $(CFLAGS) -c $< -o $@ $(INCLUDES)
+	g++ -g -Wall -std=c++11 $(CFLAGS) -c $< -o $@ $(INCLUDES) -fsanitize=address -lasan
 
 .PHONY: clean
 clean:
