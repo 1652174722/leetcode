@@ -5,7 +5,6 @@ using namespace BINARY_INDEXED_TREE;
 
 TEST(binary_indexed_tree, binary_indexed_tree_test)
 {
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     binary_indexed_tree<int> bt;
     vector<int> s_arr = {1, 2, 3, 4, 5, 6 ,7, 8, 9, 0};
     bt.binary_indexed_tree_init(s_arr);
@@ -34,9 +33,9 @@ TEST(binary_indexed_tree, binary_indexed_tree_test)
     {
         FOR_EACH(j, i, s_arr.size())
         {
-                    ASSERT_EQ(true, bt.query_interval(j - i, j) == temp_sum_func(j - i, j));
+            ASSERT_EQ(true, bt.query_interval(j - i, j) == temp_sum_func(j - i, j));
         }
-            ASSERT_EQ(true, bt.query(i) == temp_sum_func(0, i));
+        ASSERT_EQ(true, bt.query(i) == temp_sum_func(0, i));
     }
     value = 33;
     FOR_EACH(i, 0, s_arr.size())
@@ -47,5 +46,4 @@ TEST(binary_indexed_tree, binary_indexed_tree_test)
         ASSERT_EQ(true, bt.query_interval(0, s_arr.size() - 1) == temp_sum_func(0, s_arr.size() - 1));
         ASSERT_EQ(true, bt.query(i) == temp_sum_func(0, i));
     }
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }

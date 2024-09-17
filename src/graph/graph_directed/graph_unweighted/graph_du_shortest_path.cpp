@@ -37,8 +37,9 @@ namespace GRAPH_DU_SHORTEST_PATH {
         return min_depth;
     }
 
-    void graph_du_shortest_path::get_all_shortest_paths_between_two_nodes_dfs(vector<vector<int>> &adjcency_table, vector<int> &visited, vector<int> &path,
-        int curr_depth, int min_depth, int curr_node, int target_node, vector<vector<int>> &paths)
+    void graph_du_shortest_path::get_all_shortest_paths_between_two_nodes_dfs(vector<vector<int>> &adjcency_table,
+        vector<int> &visited, vector<int> &path, size_t curr_depth, size_t min_depth, size_t curr_node, size_t target_node, 
+        vector<vector<int>> &paths)
     {
         if (visited[curr_node] == 0 && curr_depth <= min_depth)
         {
@@ -55,7 +56,8 @@ namespace GRAPH_DU_SHORTEST_PATH {
                 {
                     if (visited[node_id] == 0)
                     {
-                        get_all_shortest_paths_between_two_nodes_dfs(adjcency_table, visited, path, curr_depth + 1, min_depth, node_id, target_node, paths);   
+                        get_all_shortest_paths_between_two_nodes_dfs(adjcency_table, visited, path, curr_depth + 1, 
+                            min_depth, node_id, target_node, paths);   
                     }
                 }
             }

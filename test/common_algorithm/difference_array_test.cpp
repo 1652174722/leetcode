@@ -5,7 +5,6 @@ using namespace DIFFERENCE_ARRAY;
 
 TEST(difference_array, difference_array_test_001)
 {
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     {
         int K = 10;
         {
@@ -125,5 +124,4 @@ TEST(difference_array, difference_array_test_001)
             ASSERT_EQ(true, (v[v.size() - 1] + K) == da.query(v.size() - 1));
         }
     }
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }

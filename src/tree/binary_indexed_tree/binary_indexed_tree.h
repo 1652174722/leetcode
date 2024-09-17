@@ -57,9 +57,9 @@ public:
      * @brief 在对应位置上加上k
      * 
      */
-    void add(int pos, T k)
+    void add(size_t pos, T k)
     {
-        if (pos < 0 || pos >= this->s_arr.size())
+        if (pos >= this->s_arr.size())
         {
             return;
         }
@@ -67,7 +67,7 @@ public:
         // 根据 pos 向上追溯，更新所有的父节点 找到其最顶层 // i_parent = lowbit(i + 1) + 1 + 1 - 1;
         this->s_arr[pos] += k;
         this->c_arr[pos] += k;
-        int parent = this->get_lowbit(pos + 1) + pos;
+        size_t parent = this->get_lowbit(pos + 1) + pos;
         while (parent < this->s_arr.size())
         {
             pos = parent;
@@ -80,20 +80,21 @@ public:
      * @brief 返回数组位置为pos以及前面所有元素的值
      * 
      */
-    T query(int pos)
+    T query(size_t pos)
     {
-        T res = T();
-        if (pos < 0 || pos >= this->s_arr.size())
+        T res = T(0);
+        if (pos >= this->s_arr.size())
         {
             return res;
         }
 
+        long long tmp_pos = pos;
         res = this->c_arr[pos];
-        pos = pos - this->get_lowbit(pos + 1);
-        while (pos >= 0)
-        {
-            res += this->c_arr[pos];
-            pos = pos - this->get_lowbit(pos + 1);
+        tmp_pos = tmp_pos - this->get_lowbit(tmp_pos + 1);
+
+        while (tmp_pos >= 0) {
+            res += this->c_arr[tmp_pos];
+            tmp_pos = tmp_pos - this->get_lowbit(tmp_pos + 1);
         }
         return res;
     }
@@ -105,14 +106,19 @@ public:
      * @param 
      * @return 返回区间[l, r]内的元素和
      */
-    T query_interval(int l, int r)
+    T query_interval(size_t l, size_t r)
     {
         T res = T();
-        if (l < 0 || r >= this->s_arr.size() || l > r) return res;
+        if (r >= this->s_arr.size() || l > r)
+        {
+            return res;
+        }
+
         if (l == r)
         {
             return this->s_arr[l];
         }
+
         if (l == 0)
         {
             return this->query(r);
@@ -128,13 +134,15 @@ public:
      * @param 
      * @return
      */
-    void update(int pos, T n)
+    void update(size_t pos, T n)
     {
-        if (pos < 0 || pos >= this->s_arr.size())
+        if (pos >= this->s_arr.size())
         {
             return;
         }
+
         T k = n - this->query_interval(pos, pos);
+
         this->add(pos, k);
     }
 

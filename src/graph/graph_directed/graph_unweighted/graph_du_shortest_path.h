@@ -52,8 +52,9 @@ private:
      * @param path 返回所有最短路径 path[i]为一个路径
      * @return 返回值范围[0, INT32_MAX],0表示两节点为同一节点；INT32_MAX表示两节点之间无法连接；其他值表示最短路径长度
      */
-    void get_all_shortest_paths_between_two_nodes_dfs(vector<vector<int>> &adjcency_table, vector<int> &visited, vector<int> &path,
-        int curr_depth, int min_depth, int curr_node, int target_node, vector<vector<int>> &paths);
+    void get_all_shortest_paths_between_two_nodes_dfs(vector<vector<int>> &adjcency_table,
+        vector<int> &visited, vector<int> &path, size_t curr_depth, size_t min_depth, size_t curr_node, size_t target_node, 
+        vector<vector<int>> &paths);
 
 public:
     

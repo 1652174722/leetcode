@@ -29,16 +29,16 @@ private:
     class segment_tree_node
     {
     public:
-        int l, r;
+        size_t l, r;
         T sum;
         int lazy;
-        int k;
+        T k;
         segment_tree_node()
         {
             this->r = this->l = 0;
-            this->sum = T();
+            this->sum = T(0);
             this->lazy = 0;
-            this->k = 0;
+            this->k = T(0);
         }
         segment_tree_node(int L, int R) : l(L), r(R){ 
             this->sum = T();
@@ -48,15 +48,15 @@ private:
     };
     vector<segment_tree_node> st_arr;
     vector<T> s_arr;
-    int segment_tree_layers;
+    size_t segment_tree_layers;
 
-    vector<segment_tree_node> generate_segment_tree_array(vector<T> arr, int &segment_tree_layers)
+    vector<segment_tree_node> generate_segment_tree_array(vector<T> arr, size_t &segment_tree_layers)
     {
         vector<segment_tree_node> res;
         // 根据数据大小，确认二叉树的层数
         
-        int length_len = 1;
-        int sum_length = length_len;
+        size_t length_len = 1;
+        size_t sum_length = length_len;
         segment_tree_layers = 1;
         while (length_len < arr.size())
         {
@@ -107,11 +107,11 @@ private:
         return res;
     }
 
-    int get_pow(int x, int n)
+    size_t get_pow(size_t x, size_t n)
     {
         if (n == 0) return 1;
         int res = 1;
-        while (n > 0)
+        while (n >= 1)
         {
             res *= x;
             n--;
@@ -126,23 +126,24 @@ private:
      * @param 
      * @return
      */
-    int get_segment_tree_pos(int pos)
+    size_t get_segment_tree_pos(size_t pos)
     {
         // 倒数第二层叶子节点的个数
-        int last_second_layer = this->get_pow(2, this->segment_tree_layers - 1) - this->s_arr.size();
+        size_t last_second_layer = this->get_pow(2, this->segment_tree_layers - 1) - this->s_arr.size();
+
         // 最后一层叶子节点的个数
-        int last_layer = this->s_arr.size() - last_second_layer;
+        size_t last_layer = this->s_arr.size() - last_second_layer;
         if ((pos + 1) <= last_layer)
         {
-            return this->st_arr.size() - last_layer + (pos + 1) - 1;
+            return this->st_arr.size() + pos - last_layer;
         }
         else
         {
-            return this->st_arr.size() - this->s_arr.size() + (pos + 1 - last_layer) - 1; 
+            return this->st_arr.size() + pos - this->s_arr.size() - last_layer;
         }
     }
 
-    void touch_lazy_flag(vector<segment_tree_node> &st_arr, int next_pos, T k)
+    void touch_lazy_flag(vector<segment_tree_node> &st_arr, size_t next_pos, T k)
     {
         if (this->st_arr[next_pos].lazy != 0)
         {
@@ -162,17 +163,17 @@ private:
      * @param 
      * @return
      */
-    T query_dfs(int curr_pos, int l, int r)
+    T query_dfs(size_t curr_pos, size_t l, size_t r)
     {
         if (this->st_arr[curr_pos].l >= l &&  this->st_arr[curr_pos].r <= r)
         {
-            return this->st_arr[curr_pos].sum + this->st_arr[curr_pos].lazy * (this->st_arr[curr_pos].r - this->st_arr[curr_pos].l + 1) * 
+            return this->st_arr[curr_pos].sum + this->st_arr[curr_pos].lazy * (this->st_arr[curr_pos].r + 1 - this->st_arr[curr_pos].l) * 
                 this->st_arr[curr_pos].k;
         }
 
-        int child_l = curr_pos * 2 + 1;
-        int child_r = curr_pos * 2 + 2;
-        int mid = this->st_arr[child_l].r;
+        size_t child_l = curr_pos * 2 + 1;
+        size_t child_r = curr_pos * 2 + 2;
+        size_t mid = this->st_arr[child_l].r;
         
         // 将懒标记下发
         if (this->st_arr[curr_pos].lazy != 0)
@@ -181,7 +182,7 @@ private:
 
             this->touch_lazy_flag(this->st_arr, child_r, this->st_arr[curr_pos].k);
 
-            this->st_arr[curr_pos].sum += (this->st_arr[curr_pos].r - this->st_arr[curr_pos].l + 1) * this->st_arr[curr_pos].k;
+            this->st_arr[curr_pos].sum += (this->st_arr[curr_pos].r + 1 - this->st_arr[curr_pos].l) * this->st_arr[curr_pos].k;
             this->st_arr[curr_pos].k = T();
             this->st_arr[curr_pos].lazy = 0;
         }
@@ -204,7 +205,7 @@ private:
      * @param 
      * @return
      */
-    T add_dfs(int curr_pos, int l, int r, T k)
+    T add_dfs(size_t curr_pos, size_t l, size_t r, T k)
     {
         if (l <= this->st_arr[curr_pos].l && r >= this->st_arr[curr_pos].r)
         {
@@ -220,9 +221,9 @@ private:
         }
         else
         {
-            int child_l = curr_pos * 2 + 1;
-            int child_r = curr_pos * 2 + 2;
-            int mid = this->st_arr[child_l].r;
+            size_t child_l = curr_pos * 2 + 1;
+            size_t child_r = curr_pos * 2 + 2;
+            size_t mid = this->st_arr[child_l].r;
 
             // 将懒标记下发
             if (this->st_arr[curr_pos].lazy != 0)
@@ -235,7 +236,7 @@ private:
                 this->st_arr[curr_pos].sum += this->st_arr[curr_pos].k * 
                     (this->st_arr[curr_pos].r - this->st_arr[curr_pos].l + 1);
             }
-            int temp_sum;
+            size_t temp_sum;
             if (mid >= r)
             {
                 temp_sum = this->add_dfs(child_l, l, r, k);
@@ -275,9 +276,12 @@ public:
      * @param 
      * @return
      */
-    void add(int pos, T k)
+    void add(size_t pos, T k)
     {
-        if (pos < 0 || pos >= this->s_arr.size()) return;
+        if (pos >= this->s_arr.size())
+        {
+            return;
+        }
         
         // 根据数组位置找到对应
         int st_arr_pos = this->get_segment_tree_pos(pos);
@@ -297,9 +301,9 @@ public:
      * @param 
      * @return
      */
-    void add_interval(int l, int r, T k)
+    void add_interval(size_t l, size_t r, T k)
     {
-        if (l < 0 || r >= this->s_arr.size() || l > r)
+        if (r >= this->s_arr.size() || l > r)
         {
             return;
         }
@@ -314,10 +318,10 @@ public:
      * @param 
      * @return 返回区间[l, r]内的元素和
      */
-    T query_interval(int l, int r)
+    T query_interval(size_t l, size_t r)
     {
         T res = T();
-        if (l < 0 || r >= this->s_arr.size() || l > r)
+        if (r >= this->s_arr.size() || l > r)
         {
             return res;
         }
@@ -331,7 +335,7 @@ public:
      * @param 
      * @return
      */
-    void update(int pos, T n)
+    void update(size_t pos, T n)
     {
         if (pos >= this->s_arr.size()) return;
         

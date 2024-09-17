@@ -9,7 +9,6 @@ using namespace std;
 
 TEST(graph_dijkstra, graph_dijkstra_test)
 {
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     int node_counts = 5;
     pair<pair<int, int>, int> edge_list[] = {
         {{0,  1}, 8},
@@ -175,5 +174,4 @@ TEST(graph_dijkstra, graph_dijkstra_test_002)
 
     vector<int> res = gd.get_shortest_path_weight_between_nodo_with_others(0);
     EXPECT_TRUE(true == is_equal_func(real_res, res));
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }

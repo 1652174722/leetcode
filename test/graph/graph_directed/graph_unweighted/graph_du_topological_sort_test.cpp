@@ -9,7 +9,6 @@ using namespace std;
 
 TEST(graph_du_topological_sort, graph_du_topological_sort_test)
 {
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     vector<pair<int, int>> edges;
     edges.push_back(make_pair(1, 2));
     edges.push_back(make_pair(1, 4));
@@ -35,6 +34,5 @@ TEST(graph_du_topological_sort, graph_du_topological_sort_test)
         cout << id << " ";
     }
     cout << endl;
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }
 

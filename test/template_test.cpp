@@ -8,16 +8,13 @@ using namespace std;
 
 TEST(template_test, cmp_test_001)
 {
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     ASSERT_EQ(true, true);
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }
 
 #if 0
 
 TEST(template_test, cmp_test)
 {
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     size_t loops = 10;
     // sort test
 #define VECTOR_CMP_TEST(v) \
@@ -73,7 +70,6 @@ TEST(template_test, cmp_test)
     /* set func cmp test */
     set<object, bool(*)(object, object)> s2(func_obj_cmp1);
     SET_CMP_TEST(s2);
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }
 
 #endif

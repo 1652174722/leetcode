@@ -517,7 +517,7 @@ private:
         {
             node->child[1] = this->insert_dfs(node->child[1], value, insert_count, err);
         }
-        
+
         if (err) {
             return node;
         }
@@ -634,21 +634,21 @@ public:
         }
         avl_node<T> *curr_node = this->root;
         int ret;
+        
         while (curr_node)
         {
-            ret = this->cmp_func(value, curr_node->val);
-            if (ret < 0)
-            {
-                curr_node = curr_node->child[0];
-            }
-            else if (ret > 0)
-            {
-                curr_node = curr_node->child[1];
-            }
-            else
-            {
-                value = curr_node->val;
-                return curr_node->count;
+            ret = this->cmp_func(value, curr_node->val) + 1;
+            switch (ret)
+            {   
+                case 0:
+                    curr_node = curr_node->child[0];
+                    break;
+                case 1:
+                    value = curr_node->val;
+                    return curr_node->count;
+                case 2:
+                    curr_node = curr_node->child[1];
+                    break;  
             }
         }
         return 0;

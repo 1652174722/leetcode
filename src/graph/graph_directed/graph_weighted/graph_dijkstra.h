@@ -63,19 +63,21 @@ public:
         }
     }
 
-    /**
+    /*
      * @brief 获取指定节点k到其他节点的权重
-     * @return res，res[k]固定为0，res[i](i != k)表示k到i的最短路径
+     *
+     * @param node_id: node id, start with 0
+     * @return  res，res[node_id]固定为0，res[i](i != node_id)表示k到i的最短路径
      */
-    vector<T> get_shortest_path_weight_between_nodo_with_others(int k)
+    vector<T> get_shortest_path_weight_between_nodo_with_others(size_t node_id)
     {
-        if (k < 0 || k >= this->edges.size())
+        if (node_id >= this->edges.size())
         {
             return vector<T>(0);
         }
         vector<int> visited(this->edges.size(), 0);
         vector<T> res = vector<T>(this->edges.size(), (T)PATH_INFINITE);
-        res[k] = (T)0;
+        res[node_id] = (T)0;
         
         auto weight_comp = [](const pair<T, int> &a, const pair<T, int> &b) -> bool
         {
@@ -92,7 +94,7 @@ public:
         set<pair<T, int>, decltype(weight_comp)> filter(weight_comp);
 
 
-        filter.insert(make_pair(res[k], k));
+        filter.insert(make_pair(res[node_id], node_id));
 
         while (!filter.empty())
         {

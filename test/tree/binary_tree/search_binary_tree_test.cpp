@@ -5,7 +5,6 @@ using namespace SEARCH_BINARY_TREE;
 
 TEST(search_binary_tree, get_closed_gt_test)
 {
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     TreeNode<double> a(4);
     TreeNode<double> b(2);
     TreeNode<double> c(5);
@@ -194,7 +193,6 @@ TEST(search_binary_tree, get_eq_test)
 
     node = get_eq<double>(&a, 3.6);
     ASSERT_EQ(true, node != nullptr && node->val == 3.6);
-    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }
 
 

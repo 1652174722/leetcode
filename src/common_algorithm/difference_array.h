@@ -47,16 +47,17 @@ class difference_array
          * @param 
          * @return
          **/
-        void add_given_range(int l, int r, T k)
+        void add_given_range(size_t l, size_t r, T k)
         {
-            if (l >= 0 && r < diff_arr.size())
+            if (l > r || r >= diff_arr.size())
             {
-                diff_arr[l] += k;
+                return;
+            }
 
-                if (r != (s_arr.size() - 1))
-                {
-                    diff_arr[r + 1] -= k;
-                }
+            diff_arr[l] += k;
+            if (r != (s_arr.size() - 1))
+            {
+                diff_arr[r + 1] -= k;
             }
         }
 
@@ -67,10 +68,13 @@ class difference_array
          * @param 
          * @return
          **/
-        T query(int pos)
+        T query(size_t pos)
         {
-            if (pos >= diff_arr.size()) return diff_arr[0];
-            if (pos <= 0) return diff_arr[0];
+            if (pos >= diff_arr.size())
+            {
+                return diff_arr[0];
+            }
+
             T curr_value = diff_arr[0];
             FOR_EACH(i, 1, pos + 1)
             {
