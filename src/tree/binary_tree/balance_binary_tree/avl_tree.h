@@ -572,6 +572,7 @@ public:
         {
             return 0;
         }
+
         return this->root->size;
     }
 
@@ -632,6 +633,7 @@ public:
         {
             return 0;
         }
+
         avl_node<T> *curr_node = this->root;
         int ret;
         
@@ -666,8 +668,10 @@ public:
         {
             return 0;
         }
+
         avl_node<T> *curr_node = this->root;
         int ret;
+
         while (curr_node)
         {
             ret = this->cmp_func(value, curr_node->val);
@@ -700,6 +704,7 @@ public:
         {
             return;
         }
+
         this->clear_by_post_order(this->root);
         this->root = NULL;
     }
@@ -743,6 +748,7 @@ public:
         
         size_t left_size = t;
         avl_node<T> *curr_node = this->root;
+
         while (curr_node)
         {
             size_t l_size = curr_node->child[0] == NULL ? 0 : curr_node->child[0]->size;
@@ -774,13 +780,16 @@ public:
     pair<size_t, size_t> position(const T &value)
     {
         pair<size_t, size_t> res(0, 0);
+
         if (this->cmp_func == NULL || this->root == NULL)
         {
             throw string("no such value in avl");
         }
+
         avl_node<T> *curr_node = this->root;
         size_t start_pos = 0;
         int ret;
+
         while (curr_node)
         {
             size_t l_size = curr_node->child[0] == NULL ? 0 : curr_node->child[0]->size;
@@ -818,8 +827,10 @@ public:
         {
             throw string("no such element which which is less than value");
         }
+        
         avl_node<T> *curr = root;
         avl_node<T> *first_lt = NULL;
+
         while (curr)
         {
             int ret = this->cmp_func(curr->val, value);
@@ -866,10 +877,12 @@ public:
     T first_le(const T &value)
     {
         T val = value;
+
         if (this->find(val) != 0)
         {
             return val;
         }
+
         return this->first_lt(val);
     }
 
@@ -883,7 +896,14 @@ public:
      */
     size_t first_le_pos(const T &value)
     {
-        return this->first_lt_pos(value) + this->count(value);
+        size_t count = this->count(value);
+
+        if (count != 0)
+        {
+            return thisposition(value).second;
+        }
+
+        return this->first_lt_pos(value);
     }
 
     /**
@@ -900,8 +920,10 @@ public:
         {
             throw string("no such element which which is greater than value");
         }
+
         avl_node<T> *curr = root;
         avl_node<T> *first_gt = NULL;
+
         while (curr)
         {
             int ret = this->cmp_func(curr->val, value);
@@ -916,11 +938,13 @@ public:
                 curr = curr->child[1];
             }
         }
+
         if (first_gt == NULL)
         {
             throw string("no such element which which is greater than value");
             
         }
+
         return first_gt->val;
     }
 
@@ -948,10 +972,12 @@ public:
     T first_ge(const T &value)
     {
         T val = value;
+
         if (this->find(val) != 0)
         {
             return val;
         }
+
         return this->first_gt(val);
     }
 
@@ -965,7 +991,14 @@ public:
      */
     size_t first_ge_pos(const T &value)
     {
-        return this->position(this->first_gt(value)).first - this->count(value);
+        size_t count = this->count(value);
+
+        if (count != 0)
+        {
+            return this->position(value).first;
+        }
+        
+        return this->first_gt_pos(value);
     }
 };
 
