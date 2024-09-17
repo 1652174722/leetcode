@@ -52,6 +52,12 @@ TEST(avl_tree, avl_tree_test)
         return v[i];
     };
 
+    auto count_func = [] (vector<size_t> &v, size_t i) -> size_t {
+        if (i < 0 || i >= v.size()) return 0;
+
+        return v[i];
+    };
+
     auto clear_func = [] (vector<size_t> &v) {
         FOR_EACH(i, 0, v.size())
         {
@@ -100,7 +106,7 @@ TEST(avl_tree, avl_tree_test)
 
             if (value == (int)i)
             {
-                return make_pair(start_pos, start_pos + v[i]);
+                return make_pair(start_pos, start_pos + v[i] - 1);
             }
             start_pos += v[i];
         }
@@ -258,6 +264,7 @@ TEST(avl_tree, avl_tree_test)
         {
             int llll = (int)i;
             ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.count(llll) == count_func(v1, llll));
             ASSERT_EQ(true, t1.erase_once(llll) == erase_once_func(v1, llll));
             ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
             ASSERT_EQ(true, t1.size() == size_func(v1));
@@ -269,6 +276,7 @@ TEST(avl_tree, avl_tree_test)
             ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
             ASSERT_EQ(true, t1.erase(llll) == erase_func(v1, llll));
             ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.count(llll) == count_func(v1, llll));
         }
 
         FOR_EACH(i, 0, v1.size())
@@ -277,6 +285,7 @@ TEST(avl_tree, avl_tree_test)
             ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
             ASSERT_EQ(true, t1.erase(llll) == erase_func(v1, llll));
             ASSERT_EQ(true, t1.find(llll) == find_func(v1, llll));
+            ASSERT_EQ(true, t1.count(llll) == count_func(v1, llll));
             ASSERT_EQ(true, t1.size() == size_func(v1));
         }
 
@@ -318,6 +327,61 @@ TEST(avl_tree, avl_tree_test)
         {
             ASSERT_EQ(true, res1[i].first == res2[i].first && res1[i].second == res2[i].second);
         }
+    }
+
+    // 值与位置查询测试
+    {
+        vector<int> v1 = {1, 3, 5, 5, 7, 9};
+        avl_tree<int> t1(cmp_func);
+        FOR_EACH(i, 0, v1.size())
+        {   
+            t1.insert(v1[i]);
+        }
+
+        ASSERT_EQ(true, t1.size() == v1.size());
+
+        ASSERT_EQ(true, t1.kth(0)  == v1[0]);
+        ASSERT_EQ(true, t1.kth(2)  == v1[2]);
+        ASSERT_EQ(true, t1.kth(3) == v1[3]);
+        EXPECT_ANY_THROW(t1.kth(v1.size()));
+
+        auto p = t1.position(5);
+        ASSERT_EQ(true, p.first == 2 && p.second == 3);
+        EXPECT_ANY_THROW(t1.position(10));
+
+        ASSERT_EQ(true, t1.first_lt(4) == 3 && t1.first_lt(5) == 3);
+        ASSERT_EQ(true, t1.first_lt(6) == 5);
+        ASSERT_EQ(true, t1.first_lt(10) == 9);
+        EXPECT_ANY_THROW(t1.first_lt(1));
+
+        ASSERT_EQ(true, t1.first_lt_pos(4) == 1 && t1.first_lt_pos(5) == 1);
+        ASSERT_EQ(true, t1.first_lt_pos(6) == 3);
+        ASSERT_EQ(true, t1.first_lt_pos(10) == 5);
+        EXPECT_ANY_THROW(t1.first_lt_pos(1));
+
+        ASSERT_EQ(true, t1.first_le(5) == 5 && t1.first_le(6) == 5);
+        ASSERT_EQ(true, t1.first_le(4) == 3);
+        EXPECT_ANY_THROW(t1.first_le(0));
+
+        ASSERT_EQ(true, t1.first_le_pos(5) == 3 && t1.first_le_pos(6) == 3);
+        ASSERT_EQ(true, t1.first_le_pos(4) == 1);
+        EXPECT_ANY_THROW(t1.first_le_pos(0));
+
+        ASSERT_EQ(true, t1.first_gt(3) == 5 && t1.first_gt(4) == 5);
+        ASSERT_EQ(true, t1.first_gt(5) == 7);
+        EXPECT_ANY_THROW(t1.first_gt(9));
+
+        ASSERT_EQ(true, t1.first_gt_pos(3) == 2 && t1.first_gt_pos(4) == 2);
+        ASSERT_EQ(true, t1.first_gt_pos(5) == 4);
+        EXPECT_ANY_THROW(t1.first_gt_pos(9));
+
+        ASSERT_EQ(true, t1.first_ge(4) == 5 && t1.first_ge(5) == 5);
+        ASSERT_EQ(true, t1.first_ge(6) == 7);
+        EXPECT_ANY_THROW(t1.first_ge(10));
+
+        ASSERT_EQ(true, t1.first_ge_pos(4) == 2 && t1.first_ge_pos(5) == 2);
+        ASSERT_EQ(true, t1.first_ge_pos(6) == 4);
+        EXPECT_ANY_THROW(t1.first_ge_pos(10));
     }
 
     // 性能测试

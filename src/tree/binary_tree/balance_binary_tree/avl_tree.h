@@ -660,7 +660,7 @@ public:
      * @param value
      * @return  the count of the same value
      */
-    size_t count(T &value)
+    size_t count(const T &value)
     {
         if (this->cmp_func == NULL || this->root == NULL)
         {
@@ -727,7 +727,9 @@ public:
 
     /**
      * @brief return k-th value（include count）
-     *
+     *  value  1  3 [5] 5  7  9
+     *  pos    0  1  2  3  4  5
+     *  it will return  5 if t is 2 or 3
      * @param t[int] position of value(include count),start with 0
      * @param value[out] 
      * @return 0 success; others throw -1.
@@ -763,9 +765,11 @@ public:
 
     /**
      * @brief return starting and ending position of value
-     *
+     *  value  1  3  5  5  7  9
+     *  pos    0  1 [2  3] 4  5
+     *  it will return [2,3] if value is 5
      * @param 
-     * @return pair<start positoin, end position>,[start, end):start with 0,include start position exclude end position; others throw -1,
+     * @return pair<start positoin, end position>,[start, end]:start with 0,include start position and end position; others throw exception,
      */
     pair<size_t, size_t> position(const T &value)
     {
@@ -792,7 +796,7 @@ public:
             }
             else
             {
-                return make_pair<size_t, size_t>(start_pos + l_size, start_pos + l_size + curr_node->count);
+                return make_pair<size_t, size_t>(start_pos + l_size, start_pos + l_size + curr_node->count - 1);
             }
         }
 
@@ -802,7 +806,9 @@ public:
 
     /**
      * @brief get first element which is less than value
-     *
+     *  value  1 [3] 5  5  7  9
+     *  pos    0  1  2  3  4  5
+     *  it will return 3 if value is 5 or 4
      * @param value
      * @return if no such element then throw exception
      */
@@ -837,8 +843,54 @@ public:
     }
 
     /**
+     * @brief get first element position(start with 0)which is less than value,
+     *  value  1  3  5  5  7  9
+     *  pos    0 [1] 2  3  4  5
+     *  it will return 1 if value is 4 or 5.
+     * @param value
+     * @return if no such element then throw exception
+     */
+    size_t first_lt_pos(const T &value)
+    {
+        return this->position(this->first_lt(value)).second;
+    }
+
+    /**
+     * @brief get first element which is less or equal than value
+     *  value  1  3  5 [5] 7  9
+     *  pos    0  1  2  3  4  5
+     *  it will return 5 if value is 5 or 6.
+     * @param value
+     * @return if no such element then throw exception
+     */
+    T first_le(const T &value)
+    {
+        T val = value;
+        if (this->find(val) != 0)
+        {
+            return val;
+        }
+        return this->first_lt(val);
+    }
+
+    /**
+     * @brief get first element position(start with 0)which is less or equal than value,
+     *  value  1  3  5  5  7  9
+     *  pos    0  1  2 [3] 4  5
+     *  it will return 3 if value is 5 or 6.
+     * @param value
+     * @return if no such element then throw exception
+     */
+    size_t first_le_pos(const T &value)
+    {
+        return this->first_lt_pos(value) + this->count(value);
+    }
+
+    /**
      * @brief get first element which is greater than value
-     *
+     *  value  1  3 [5] 5  7  9
+     *  pos    0  1  2  3  4  5
+     *  it will return 5 if value is 3 or 4.
      * @param value
      * @return if no such element then throw exception
      */
@@ -870,6 +922,50 @@ public:
             
         }
         return first_gt->val;
+    }
+
+    /**
+     * @brief get first element position(start with 0)which is less than value,
+     *  value  1  3  5  5  7  9
+     *  pos    0  1 [2] 3  4  5
+     *  it will return 2 if value is 3 or 4.
+     * @param value
+     * @return if no such element then throw exception
+     */
+    size_t first_gt_pos(const T &value)
+    {
+        return this->position(this->first_gt(value)).first;
+    }
+
+    /**
+     * @brief get first element which is greater or equal than value
+     *  value  1  3 [5] 5  7  9
+     *  pos    0  1  2  3  4  5
+     *  it will return 5 if value is 4 or 5.
+     * @param value
+     * @return if no such element then throw exception
+     */
+    T first_ge(const T &value)
+    {
+        T val = value;
+        if (this->find(val) != 0)
+        {
+            return val;
+        }
+        return this->first_gt(val);
+    }
+
+    /**
+     * @brief get first element position(start with 0)which is less or equal than value,
+     *  value  1  3  5  5  7  9
+     *  pos    0  1 [2] 3  4  5
+     *  it will return 2 if value is 4 or 5.
+     * @param value
+     * @return if no such element then throw exception
+     */
+    size_t first_ge_pos(const T &value)
+    {
+        return this->position(this->first_gt(value)).first - this->count(value);
     }
 };
 
