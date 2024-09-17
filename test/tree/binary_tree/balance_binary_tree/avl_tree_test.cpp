@@ -406,6 +406,15 @@ TEST(avl_tree, avl_tree_test)
         EXPECT_ANY_THROW(t1.first_ge_pos(8));
     }
 
+    {
+        vector<int> v1 = {0, 0, 2, 2, 1, 2, -1, -3};
+        avl_tree<int> t1(cmp_func);
+        FOR_EACH(i, 0, v1.size())
+        {   
+            t1.insert(v1[i]);
+        }
+    }
+
     // 性能测试
     {
         double time_consume;

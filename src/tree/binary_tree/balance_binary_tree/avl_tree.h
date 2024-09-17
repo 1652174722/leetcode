@@ -476,7 +476,7 @@ private:
                 else
                 {
                     // 先进行右旋
-                    node->child[0] = right_rotate(node->child[0]);
+                    node->child[1] = right_rotate(node->child[1]);
                     // 再进行左旋
                     res_node = left_rotate(node);
                 }
