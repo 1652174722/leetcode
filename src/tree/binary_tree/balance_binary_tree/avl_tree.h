@@ -900,7 +900,7 @@ public:
 
         if (count != 0)
         {
-            return thisposition(value).second;
+            return this->position(value).second;
         }
 
         return this->first_lt_pos(value);
