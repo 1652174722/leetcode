@@ -326,7 +326,7 @@ TEST(avl_tree, avl_tree_test)
         struct timeval start;
         struct timeval end;
         
-        int count = 1024 * 1024 * 10;
+        int count = 1024 * 128;
         avl_tree<int> t1(cmp_func);
 
         gettimeofday(&start, NULL);
@@ -359,37 +359,35 @@ TEST(avl_tree, avl_tree_test)
         time_consume = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
         cout << "avl_tree erase count(" << count << ")" << " duration:" << time_consume << "s" << endl;
 
-        // set<int> s1;
-        // gettimeofday(&start, NULL);
-        // FOR_EACH(i, 0, count)
-        // {
-        //     int llll = (int)i;
-        //     s1.insert(llll);
-        // }
-        // gettimeofday(&end, NULL);
-        // time_consume = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
-        // cout << "set insert count(" << count << ")" << " duration:" << time_consume << "s" << endl;
+        set<int> s1;
+        gettimeofday(&start, NULL);
+        FOR_EACH(i, 0, count)
+        {
+            int llll = (int)i;
+            s1.insert(llll);
+        }
+        gettimeofday(&end, NULL);
+        time_consume = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+        cout << "set insert count(" << count << ")" << " duration:" << time_consume << "s" << endl;
 
-        // gettimeofday(&start, NULL);
-        // FOR_EACH(i, 0, count)
-        // {
-        //     int llll = (int)i;
-        //     s1.find(llll);
-        // }
-        // gettimeofday(&end, NULL);
-        // time_consume = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
-        // cout << "set find count(" << count << ")" << " duration:" << time_consume << "s" << endl;
+        gettimeofday(&start, NULL);
+        FOR_EACH(i, 0, count)
+        {
+            int llll = (int)i;
+            s1.find(llll);
+        }
+        gettimeofday(&end, NULL);
+        time_consume = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+        cout << "set find count(" << count << ")" << " duration:" << time_consume << "s" << endl;
 
-        // gettimeofday(&start, NULL);
-        // FOR_EACH(i, 0, count)
-        // {
-        //     int llll = (int)i;
-        //     s1.erase(llll);
-        // }
-        // gettimeofday(&end, NULL);
-        // time_consume = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
-        // cout << "set erase count(" << count << ")" << " duration:" << time_consume << "s" << endl;
-        
-
+        gettimeofday(&start, NULL);
+        FOR_EACH(i, 0, count)
+        {
+            int llll = (int)i;
+            s1.erase(llll);
+        }
+        gettimeofday(&end, NULL);
+        time_consume = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+        cout << "set erase count(" << count << ")" << " duration:" << time_consume << "s" << endl;
     }
 }
