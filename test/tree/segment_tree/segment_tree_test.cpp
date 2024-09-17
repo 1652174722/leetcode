@@ -5,6 +5,7 @@ using namespace SEGMENT_TREE;
 
 TEST(segment_tree, segment_tree_test_001)
 {
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     {
             // 测试区间查询能力
         vector<int> s_arr = {0, 1, 2, 3, 4, 5};
@@ -18,9 +19,10 @@ TEST(segment_tree, segment_tree_test_001)
             }
             return sum;
         };
-            ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
+        ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
     }
-    
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
+
     {
         // 测试 单点更新
         vector<int> s_arr = {0, 1, 2, 3, 4, 5};
@@ -47,7 +49,7 @@ TEST(segment_tree, segment_tree_test_001)
         }
     }
 
-
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     {
         // 测试 区间更新
         vector<int> s_arr = {0, 1, 2, 3, 4, 5};
@@ -80,7 +82,7 @@ TEST(segment_tree, segment_tree_test_001)
             ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
         }
     }
-
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     {
         // 测试 区间更新
         vector<int> s_arr = {0, 1, 2, 3, 4, 5};
@@ -114,7 +116,7 @@ TEST(segment_tree, segment_tree_test_001)
         }
 
     }
-
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     {
         // 测试 单点更新
         vector<int> s_arr = {0, 1, 2, 3, 4, 5};
@@ -142,8 +144,8 @@ TEST(segment_tree, segment_tree_test_001)
             ASSERT_EQ(true, st.query_interval(i, i) == temp_sum_func(i, i));
             ASSERT_EQ(true, st.query_interval(0, 5) == temp_sum_func(0, 5));
         }
-
     }
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }
 
 TEST(segment_tree, segment_tree_test_002)
@@ -186,9 +188,8 @@ TEST(segment_tree, segment_tree_test_002)
         value =  + 10000;
         ASSERT_EQ(true, st.query_interval(0, value - 1) == temp_sum_func(0, value - 1));
         s_arr[value] += 1;
-        st.add(value, 1);
-        
-        
+        st.add(value, 1);        
     }
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }
 

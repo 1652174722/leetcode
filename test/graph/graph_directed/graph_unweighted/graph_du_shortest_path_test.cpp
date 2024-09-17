@@ -9,6 +9,7 @@ using namespace std;
 
 TEST(graph_du_shortest_path, get_shortest_path_length_between_two_nodes_test)
 {
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
     pair<int, int> edge_list[] = {
         {0, 1},
         {0, 2},
@@ -126,5 +127,6 @@ TEST(graph_du_shortest_path, get_shorts_paths_between_two_nodes_test)
         EXPECT_TRUE(1 == res.size());
         EXPECT_TRUE(true == is_equal_func(res, real_res));
     }
+    cout << "file name:" << __FILE__ << " func name:" << __func__ << " line no:" << __LINE__ << endl;
 }
 

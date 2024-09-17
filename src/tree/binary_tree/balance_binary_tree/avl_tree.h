@@ -31,7 +31,6 @@ namespace AVL_TREE
  * @param
  * @return
  */
-
 template <class T>
 struct avl_node
 {
@@ -91,7 +90,7 @@ private:
             clear_by_post_order(node->child[1]);
             node->child[0] = NULL;
             node->child[1] = NULL;
-            free(node);
+            delete node;
         }
     }
 
@@ -146,19 +145,19 @@ private:
                     {
                         // 左子树必为叶子节点。直接删除当前节点，左子树上移
                         sub_node = node->child[0];
-                        free(node);
+                        delete node;
                         return sub_node;
                     }
                     else if (node->child[1] != NULL)
                     {
                         // 右子树必为叶子节点。直接删除当前节点，右子树上移
                         sub_node = node->child[1];
-                        free(node);
+                        delete node;
                         return sub_node;
                     }
                     else
                     {
-                        free(node);
+                        delete node;
                         return NULL;
                     }
                 }
@@ -193,7 +192,7 @@ private:
                 {
                     sub_node = node->child[0];
                 }
-                free(node);
+                delete node;
                 return sub_node;
             }
             else
@@ -237,19 +236,19 @@ private:
                 {
                     // 左子树必为叶子节点。直接删除当前节点，左子树上移
                     sub_node = node->child[0];
-                    free(node);
+                    delete node;
                     return sub_node;
                 }
                 else if (node->child[1] != NULL)
                 {
                     // 左子树必为叶子节点。直接删除当前节点，左子树上移
                     sub_node = node->child[1];
-                    free(node);
+                    delete node;
                     return sub_node;
                 }
                 else
                 {
-                    free(node);
+                    delete node;
                     return NULL;
                 }
             }
@@ -276,7 +275,7 @@ private:
                 {
                     sub_node = node->child[0];
                 }
-                free(node);
+                delete node;
                 return sub_node;
             }
             else

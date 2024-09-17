@@ -1,7 +1,7 @@
 .vscode
 
 *.o
-leetcode
+leetcode_test
 
 *.a
 *.so
