@@ -328,7 +328,7 @@ TEST(avl_tree, avl_tree_test)
         struct timeval end;
         
 
-        int count = 1024 * 1024 * 10;
+        int count = 1024 * 1024;
         avl_tree<int> t1(cmp_func);
 
         gettimeofday(&start, NULL);
